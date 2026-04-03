@@ -21,9 +21,9 @@ export const AuthProvider = ({ children }) => {
       .finally(() => setLoading(false));
   }, []);
 
-  const login = (userData) => {
+  const login = (userData,token) => {
     setUser(userData);
-    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("token", token);
     localStorage.removeItem('loggedOut');
   };
 

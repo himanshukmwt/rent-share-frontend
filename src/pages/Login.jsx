@@ -22,8 +22,9 @@ const Login = () => {
     try {
       const res = await loginAPI(form);
       // After login, fetch full profile to ensure role is set
+      login(null, res.data.token);
       const profileRes = await getProfile();
-      login(profileRes.data);
+      login(profileRes.data,res.data.token);
       const role = profileRes.data?.role?.toString().toUpperCase();
       const target = role === 'ADMIN' ? '/admin' : '/';
       navigate(target);
