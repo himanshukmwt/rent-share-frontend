@@ -15,25 +15,52 @@ const Login = () => {
     if (user) navigate('/');
   }, [user, navigate]);
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setError('');
+  //   try {
+  //     const res = await loginAPI(form);
+  //     // After login, fetch full profile to ensure role is set
+  //     login(res.data.user, res.data.token);
+  //     const profileRes = await getProfile();
+  //     login(profileRes.data,res.data.token);
+  //     const role = profileRes.data?.role?.toString().toUpperCase();
+  //     const target = role === 'ADMIN' ? '/admin' : '/';
+  //     navigate(target);
+  //   } catch (err) {
+  //     setError(err.response?.data?.message || 'Invalid email or password. Please try again.');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    try {
-      const res = await loginAPI(form);
-      // After login, fetch full profile to ensure role is set
-      login(null, res.data.token);
-      const profileRes = await getProfile();
-      login(profileRes.data,res.data.token);
-      const role = profileRes.data?.role?.toString().toUpperCase();
-      const target = role === 'ADMIN' ? '/admin' : '/';
-      navigate(target);
-    } catch (err) {
-      setError(err.response?.data?.message || 'Invalid email or password. Please try again.');
-    } finally {
-      setLoading(false);
+  e.preventDefault();
+  setLoading(true);
+  setError('');
+  try {
+    const res = await loginAPI(form);
+    
+    if (res.data.token) {
+      localStorage.setItem('token', res.data.token);
     }
-  };
+    
+    login(res.data.user, res.data.token);
+    
+    const profileRes = await getProfile();
+    login(profileRes.data, res.data.token);
+    
+    const role = profileRes.data?.role?.toString().toUpperCase();
+    const target = role === 'ADMIN' ? '/admin' : '/';
+    navigate(target);
+    
+  } catch (err) {
+    setError(err.response?.data?.message || 'Invalid email or password.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-50 flex items-center justify-center px-4 pt-16">
