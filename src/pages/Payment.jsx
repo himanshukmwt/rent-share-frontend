@@ -178,7 +178,7 @@ const Payment = () => {
             <div className="flex gap-4 p-4 bg-gray-50 rounded-xl mb-6">
               {rental.item?.images?.[0] ? (
                 <img
-                  src={rental.item.images[0]}
+                  // src={rental.item.images[0]}
                   alt={rental.item?.name}
                   className="w-16 h-16 object-cover rounded-xl flex-shrink-0"
                 />
@@ -211,7 +211,7 @@ const Payment = () => {
               </div>
               {rental.platformFee > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Platform Fee</span>
+                  <span className="text-gray-500">Platform Fee+Service Charge</span>
                   <span className="font-medium">₹{rental.platformFee}</span>
                 </div>
               )}

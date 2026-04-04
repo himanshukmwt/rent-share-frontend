@@ -294,7 +294,7 @@ const ItemDetails = () => {
                 )}
 
                 {/* Availability ribbon */}
-                <div className="absolute top-4 left-4">
+                {/* <div className="absolute top-4 left-4">
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm shadow-sm ${
                     item.availability
                       ? 'bg-green-500/90 text-white'
@@ -303,7 +303,7 @@ const ItemDetails = () => {
                     <span className="avail-dot bg-white opacity-80" />
                     {item.availability ? 'Available' : 'Currently Rented'}
                   </span>
-                </div>
+                </div> */}
               </div>
 
               {/* Thumbnails */}

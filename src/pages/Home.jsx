@@ -153,7 +153,7 @@ const Home = () => {
               className="text-blue-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto hero-fade-in"
               style={{ lineHeight: '1.7', animationDelay: '200ms' }}
             >
-              Borrow items from people near you. Save money, reduce waste, build community.
+              Borrow items nearby, save money and make your community stronger.
             </p>
 
             {/* CTAs */}
