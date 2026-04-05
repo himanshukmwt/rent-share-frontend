@@ -21,28 +21,49 @@ const Profile = () => {
   const [locSuccess, setLocSuccess] = useState('');
   const [kycLoading, setKycLoading] = useState(false);
 
+  // useEffect(() => {
+  //   if (!user) return;
+
+  //   getProfile().then(res => {
+  //     setProfile(res.data);
+  //     setForm({
+  //       upiId: res.data.upiId || '',
+  //       city: res.data.city || '',
+  //       area: res.data.area || '',
+  //       phoneNumber: res.data.phoneNumber || '',
+  //     });
+  //     setUpiEditMode(!res.data.upiId);
+  //     setPhoneEditMode(!res.data.phoneNumber);
+  //   }).catch(() => setLoading(false));
+
+  //   getMyKYC().then(res => setKyc(res.data)).catch(() => {});
+  // }, [user]);
+
+  
+
+
   useEffect(() => {
-    if (!user) return;
+  if (!user) return;
 
-    getProfile().then(res => {
-      setProfile(res.data);
-      setForm({
-        upiId: res.data.upiId || '',
-        city: res.data.city || '',
-        area: res.data.area || '',
-        phoneNumber: res.data.phoneNumber || '',
-      });
-      setUpiEditMode(!res.data.upiId);
-      setPhoneEditMode(!res.data.phoneNumber);
-    }).catch(() => setLoading(false));
+  // getProfile() mat bulao - seedha user use karo
+  setProfile(user);
+  setForm({
+    upiId: user.upiId || '',
+    city: user.city || '',
+    area: user.area || '',
+    phoneNumber: user.phoneNumber || '',
+  });
+  setUpiEditMode(!user.upiId);
+  setPhoneEditMode(!user.phoneNumber);
 
-    getMyKYC().then(res => setKyc(res.data)).catch(() => {});
-  }, [user]);
+  getMyKYC().then(res => setKyc(res.data)).catch(() => {});
+}, [user]);
 
-  useEffect(() => {
+useEffect(() => {
     setError(''); setSuccess(''); setLocError(''); setLocSuccess('');
   }, [tab]);
 
+  
   const handleSaveUPI = async () => {
     if (!form.upiId?.trim()) return setError('UPI ID is required.');
     const upiRegex = /^[\w.\-]+@[\w.\-]+$/;
@@ -82,7 +103,7 @@ const Profile = () => {
     } catch (err) {
       setLocError(err.response?.data?.message || 'Error saving location.');
     } finally { 
-      setLocLoading(false); // ✅ FIXED: was setLoading(false) before
+      setLocLoading(false); 
     }
   };
 
