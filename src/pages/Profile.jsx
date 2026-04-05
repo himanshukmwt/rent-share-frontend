@@ -175,7 +175,7 @@ const Profile = () => {
         /* ✅ FIXED: Mobile responsive */
         @media (max-width: 768px) {
           .profile-root {
-            padding-top: 60px;
+            padding-top: 72px;
           }
           .profile-inner {
             padding: 16px 12px 100px;
