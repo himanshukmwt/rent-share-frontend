@@ -22,20 +22,38 @@ const Profile = () => {
   const [locSuccess, setLocSuccess] = useState('');
   const [kycLoading, setKycLoading] = useState(false);
 
+  // useEffect(() => {
+  //   getProfile().then(res => {
+  //     setProfile(res.data);
+  //     setForm({
+  //       upiId: res.data.upiId || '',
+  //       city: res.data.city || '',
+  //       area: res.data.area || '',
+  //       phoneNumber: res.data.phoneNumber || '',
+  //     });
+  //     setUpiEditMode(!res.data.upiId);
+  //     setPhoneEditMode(!res.data.phoneNumber);
+  //   });
+  //   getMyKYC().then(res => setKyc(res.data)).catch(() => {});
+  // }, [user]);
+
   useEffect(() => {
-    getProfile().then(res => {
-      setProfile(res.data);
-      setForm({
-        upiId: res.data.upiId || '',
-        city: res.data.city || '',
-        area: res.data.area || '',
-        phoneNumber: res.data.phoneNumber || '',
-      });
-      setUpiEditMode(!res.data.upiId);
-      setPhoneEditMode(!res.data.phoneNumber);
+  if (!user) return; // ← Yeh add karo
+
+  getProfile().then(res => {
+    setProfile(res.data);
+    setForm({
+      upiId: res.data.upiId || '',
+      city: res.data.city || '',
+      area: res.data.area || '',
+      phoneNumber: res.data.phoneNumber || '',
     });
-    getMyKYC().then(res => setKyc(res.data)).catch(() => {});
-  }, [user]);
+    setUpiEditMode(!res.data.upiId);
+    setPhoneEditMode(!res.data.phoneNumber);
+  }).catch(() => setLoading(false)); // ← Error pe bhi loading hatao
+
+  getMyKYC().then(res => setKyc(res.data)).catch(() => {});
+}, [user]);
 
   useEffect(() => {
     setError(''); setSuccess(''); setLocError(''); setLocSuccess('');

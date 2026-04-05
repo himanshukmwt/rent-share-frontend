@@ -28,8 +28,8 @@ const SkeletonCard = ({ i }) => (
 // );
 
 const Stat = ({ value, label }) => (
-  <div className="flex flex-col items-center gap-1 px-4 sm:px-8">
-    <span className="text-2xl sm:text-3xl font-bold text-white tracking-tight whitespace-nowrap">{value}</span>
+  <div className="flex flex-col items-center gap-1 px-3 sm:px-8">
+    <span className="text-xl sm:text-3xl font-bold text-white tracking-tight whitespace-nowrap">{value}</span>
     <span className="text-xs uppercase tracking-widest text-blue-200 font-medium whitespace-nowrap">{label}</span>
   </div>
 );

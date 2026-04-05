@@ -20,12 +20,9 @@ export const AuthProvider = ({ children }) => {
   //     .catch(() => setUser(null))
   //     .finally(() => setLoading(false));
   // }, []);
-
-  useEffect(() => {
+useEffect(() => {
   const token = localStorage.getItem('token');
-  const loggedOut = localStorage.getItem('loggedOut');
-  
-  if (!token || loggedOut) {
+  if (!token || localStorage.getItem('loggedOut')) {
     setUser(null);
     setLoading(false);
     return;
@@ -33,9 +30,12 @@ export const AuthProvider = ({ children }) => {
 
   getProfile()
     .then(res => setUser(res.data))
-    .catch(() => {
+    .catch((err) => {
+      // Sirf 401 pe token hatao, network error pe nahi
+      if (err.response?.status === 401) {
+        localStorage.removeItem('token');
+      }
       setUser(null);
-      localStorage.removeItem('token'); 
     })
     .finally(() => setLoading(false));
 }, []);
