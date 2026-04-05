@@ -8,18 +8,37 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   const loggedOut = localStorage.getItem('loggedOut');
+  //   if (loggedOut) {
+  //     setUser(null);
+  //     setLoading(false);
+  //     return;
+  //   }
+  //   getProfile()
+  //     .then(res => setUser(res.data))
+  //     .catch(() => setUser(null))
+  //     .finally(() => setLoading(false));
+  // }, []);
+
   useEffect(() => {
-    const loggedOut = localStorage.getItem('loggedOut');
-    if (loggedOut) {
+  const token = localStorage.getItem('token');
+  const loggedOut = localStorage.getItem('loggedOut');
+  
+  if (!token || loggedOut) {
+    setUser(null);
+    setLoading(false);
+    return;
+  }
+
+  getProfile()
+    .then(res => setUser(res.data))
+    .catch(() => {
       setUser(null);
-      setLoading(false);
-      return;
-    }
-    getProfile()
-      .then(res => setUser(res.data))
-      .catch(() => setUser(null))
-      .finally(() => setLoading(false));
-  }, []);
+      localStorage.removeItem('token'); 
+    })
+    .finally(() => setLoading(false));
+}, []);
 
   const login = (userData,token) => {
     localStorage.setItem("token", token);

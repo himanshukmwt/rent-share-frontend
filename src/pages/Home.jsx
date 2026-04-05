@@ -20,10 +20,17 @@ const SkeletonCard = ({ i }) => (
 );
 
 /* ─── Stat ──────────────────────────────────────────────── */
+// const Stat = ({ value, label }) => (
+//   <div className="flex flex-col items-center gap-1 px-8">
+//     <span className="text-3xl font-bold text-white tracking-tight">{value}</span>
+//     <span className="text-xs uppercase tracking-widest text-blue-200 font-medium">{label}</span>
+//   </div>
+// );
+
 const Stat = ({ value, label }) => (
-  <div className="flex flex-col items-center gap-1 px-8">
-    <span className="text-3xl font-bold text-white tracking-tight">{value}</span>
-    <span className="text-xs uppercase tracking-widest text-blue-200 font-medium">{label}</span>
+  <div className="flex flex-col items-center gap-1 px-4 sm:px-8">
+    <span className="text-2xl sm:text-3xl font-bold text-white tracking-tight whitespace-nowrap">{value}</span>
+    <span className="text-xs uppercase tracking-widest text-blue-200 font-medium whitespace-nowrap">{label}</span>
   </div>
 );
 
@@ -83,7 +90,7 @@ const Home = () => {
           box-shadow: 0 20px 50px rgba(37,99,235,0.15), 0 0 0 1px rgba(99,102,241,0.15);
         }
 
-        .stat-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.2); }
+        .stat-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.2),flex-shrink: 0;  }
 
         .marquee-track {
           display: flex;
