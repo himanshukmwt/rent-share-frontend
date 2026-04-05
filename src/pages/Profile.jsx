@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getProfile, updateProfile, updateLocation, submitKYC, getMyKYC } from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import Alert from '../components/Alert';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -22,38 +21,23 @@ const Profile = () => {
   const [locSuccess, setLocSuccess] = useState('');
   const [kycLoading, setKycLoading] = useState(false);
 
-  // useEffect(() => {
-  //   getProfile().then(res => {
-  //     setProfile(res.data);
-  //     setForm({
-  //       upiId: res.data.upiId || '',
-  //       city: res.data.city || '',
-  //       area: res.data.area || '',
-  //       phoneNumber: res.data.phoneNumber || '',
-  //     });
-  //     setUpiEditMode(!res.data.upiId);
-  //     setPhoneEditMode(!res.data.phoneNumber);
-  //   });
-  //   getMyKYC().then(res => setKyc(res.data)).catch(() => {});
-  // }, [user]);
-
   useEffect(() => {
-  if (!user) return; // ← Yeh add karo
+    if (!user) return;
 
-  getProfile().then(res => {
-    setProfile(res.data);
-    setForm({
-      upiId: res.data.upiId || '',
-      city: res.data.city || '',
-      area: res.data.area || '',
-      phoneNumber: res.data.phoneNumber || '',
-    });
-    setUpiEditMode(!res.data.upiId);
-    setPhoneEditMode(!res.data.phoneNumber);
-  }).catch(() => setLoading(false)); // ← Error pe bhi loading hatao
+    getProfile().then(res => {
+      setProfile(res.data);
+      setForm({
+        upiId: res.data.upiId || '',
+        city: res.data.city || '',
+        area: res.data.area || '',
+        phoneNumber: res.data.phoneNumber || '',
+      });
+      setUpiEditMode(!res.data.upiId);
+      setPhoneEditMode(!res.data.phoneNumber);
+    }).catch(() => setLoading(false));
 
-  getMyKYC().then(res => setKyc(res.data)).catch(() => {});
-}, [user]);
+    getMyKYC().then(res => setKyc(res.data)).catch(() => {});
+  }, [user]);
 
   useEffect(() => {
     setError(''); setSuccess(''); setLocError(''); setLocSuccess('');
@@ -79,8 +63,8 @@ const Profile = () => {
     if (!/^[6-9]\d{9}$/.test(form.phoneNumber)) return setError('Enter a valid 10-digit Indian phone number.');
     setLoading(true); setError('');
     try {
-          const res = await updateProfile({ phoneNumber: form.phoneNumber.trim() })
-          setProfile(res.data);
+      const res = await updateProfile({ phoneNumber: form.phoneNumber.trim() });
+      setProfile(res.data);
       setSaved(true); setPhoneEditMode(false);
       setTimeout(() => setSaved(false), 2000);
     } catch (err) {
@@ -97,7 +81,9 @@ const Profile = () => {
       setTimeout(() => setLocSuccess(''), 3000);
     } catch (err) {
       setLocError(err.response?.data?.message || 'Error saving location.');
-    } finally { setLoading(false); }
+    } finally { 
+      setLocLoading(false); // ✅ FIXED: was setLoading(false) before
+    }
   };
 
   const handleDetectLocation = () => {
@@ -145,7 +131,7 @@ const Profile = () => {
     try {
       const res = await submitKYC(data);
       setKyc(res.data);
-      setSuccess("KYC submitted! We'll review within 24\u201348 hours.");
+      setSuccess("KYC submitted! We'll review within 24–48 hours.");
     } catch (err) {
       setError(err.response?.data?.message || 'Error submitting KYC.');
     } finally { setKycLoading(false); }
@@ -184,6 +170,48 @@ const Profile = () => {
           max-width: 640px;
           margin: 0 auto;
           padding: 40px 20px 80px;
+        }
+
+        /* ✅ FIXED: Mobile responsive */
+        @media (max-width: 768px) {
+          .profile-root {
+            padding-top: 60px;
+          }
+          .profile-inner {
+            padding: 16px 12px 100px;
+          }
+          .profile-hero {
+            padding: 20px 16px !important;
+            border-radius: 18px !important;
+          }
+          .card {
+            padding: 20px 16px !important;
+            border-radius: 18px !important;
+          }
+          .hero-name {
+            font-size: 18px !important;
+          }
+          .avatar {
+            width: 56px !important;
+            height: 56px !important;
+            font-size: 22px !important;
+            border-radius: 16px !important;
+          }
+          .tab-btn {
+            font-size: 12px !important;
+            padding: 9px 8px !important;
+            gap: 4px !important;
+          }
+          .tab-icon {
+            font-size: 13px !important;
+          }
+          .btn-primary {
+            padding: 13px !important;
+            font-size: 13px !important;
+          }
+          .input-field {
+            font-size: 16px !important; /* Prevents iOS zoom on focus */
+          }
         }
 
         /* Hero Header */
@@ -512,7 +540,7 @@ const Profile = () => {
                   </>
                 ) : (
                   <div className="display-field">
-                    <span className="display-value">{form.phoneNumber || <span style={{ color: 'rgba(241,241,246,0.25)' }}>Not set</span>}</span>
+                    <span className="display-value">{form.phoneNumber || <span style={{ color: '#C4C8D4' }}>Not set</span>}</span>
                     <button className="change-btn" onClick={() => setPhoneEditMode(true)}>Change</button>
                   </div>
                 )}
@@ -602,8 +630,8 @@ const Profile = () => {
                 </button>
               </div>
 
-              <button onClick={handleSaveLocation} disabled={loading} className="btn-primary">
-                {loading ? 'Saving…' : 'Save Location'}
+              <button onClick={handleSaveLocation} disabled={locLoading} className="btn-primary">
+                {locLoading ? 'Saving…' : 'Save Location'}
               </button>
             </div>
           )}
