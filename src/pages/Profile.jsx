@@ -42,19 +42,47 @@ const Profile = () => {
   
 
 
-  useEffect(() => {
+//   useEffect(() => {
+//   if (!user) return;
+
+//   // getProfile() mat bulao - seedha user use karo
+//   setProfile(user);
+//   setForm({
+//     upiId: user.upiId || '',
+//     city: user.city || '',
+//     area: user.area || '',
+//     phoneNumber: user.phoneNumber || '',
+//   });
+//   setUpiEditMode(!user.upiId);
+//   setPhoneEditMode(!user.phoneNumber);
+
+//   getMyKYC().then(res => setKyc(res.data)).catch(() => {});
+// }, [user]);
+
+useEffect(() => {
   if (!user) return;
 
-  // getProfile() mat bulao - seedha user use karo
-  setProfile(user);
-  setForm({
-    upiId: user.upiId || '',
-    city: user.city || '',
-    area: user.area || '',
-    phoneNumber: user.phoneNumber || '',
-  });
-  setUpiEditMode(!user.upiId);
-  setPhoneEditMode(!user.phoneNumber);
+  const token = localStorage.getItem('token');
+  
+  fetch(`${import.meta.env.VITE_API_URL}/users/profile`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log('PROFILE:', data); // ← dekho kya aa raha hai
+    setProfile(data);
+    setForm({
+      upiId: data.upiId || '',
+      city: data.city || '',
+      area: data.area || '',
+      phoneNumber: data.phoneNumber || '',
+    });
+    setUpiEditMode(!data.upiId);
+    setPhoneEditMode(!data.phoneNumber);
+  })
+  .catch(err => console.log('ERROR:', err));
 
   getMyKYC().then(res => setKyc(res.data)).catch(() => {});
 }, [user]);
@@ -63,7 +91,7 @@ useEffect(() => {
     setError(''); setSuccess(''); setLocError(''); setLocSuccess('');
   }, [tab]);
 
-  
+
   const handleSaveUPI = async () => {
     if (!form.upiId?.trim()) return setError('UPI ID is required.');
     const upiRegex = /^[\w.\-]+@[\w.\-]+$/;
