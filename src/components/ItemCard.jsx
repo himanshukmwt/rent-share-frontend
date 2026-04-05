@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { addToCart } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
 
 const ItemCard = ({ item }) => {
@@ -8,11 +9,28 @@ const ItemCard = ({ item }) => {
   const [error, setError]     = useState('');
   const [imgErr, setImgErr]   = useState(false);
 
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const unavailable = item.availability === false;
+
+  const handleCardClick = () => {
+    if (!user) {
+      navigate('/login');
+    } else {
+      navigate(`/items/${item.id}`);
+    }
+  };
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
     setAdding(true);
     setError('');
     try {
@@ -42,6 +60,7 @@ const ItemCard = ({ item }) => {
           display: flex;
           flex-direction: column;
           height: 100%;
+          cursor: pointer;
         }
         .item-card:hover {
           transform: translateY(-6px);
@@ -65,7 +84,6 @@ const ItemCard = ({ item }) => {
           transform: scale(1.07);
         }
 
-        /* shimmer on image hover */
         .item-card-img::after {
           content: '';
           position: absolute;
@@ -168,7 +186,6 @@ const ItemCard = ({ item }) => {
           font-weight: 500;
         }
 
-        /* Cart button */
         .cart-btn {
           display: flex;
           align-items: center;
@@ -202,7 +219,6 @@ const ItemCard = ({ item }) => {
         @keyframes spin { to { transform: rotate(360deg); } }
         .spin { animation: spin 0.7s linear infinite; display: inline-block; }
 
-        /* No-image placeholder */
         .img-placeholder {
           width: 100%;
           height: 100%;
@@ -217,10 +233,11 @@ const ItemCard = ({ item }) => {
         .img-placeholder span { font-size: 0.7rem; color: #93c5fd; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
       `}</style>
 
-      <Link to={`/items/${item.id}`} className="block h-full" style={{ textDecoration: 'none' }}>
+      {/* div instead of Link — login check on click */}
+      <div onClick={handleCardClick} className="block h-full" style={{ textDecoration: 'none' }}>
         <div className="item-card">
 
-          {/* ── Image ── */}
+          {/* Image */}
           <div className="item-card-img">
             {item.images?.[0] && !imgErr ? (
               <img
@@ -239,12 +256,10 @@ const ItemCard = ({ item }) => {
               </div>
             )}
 
-            {/* Category */}
             {item.category && (
               <span className="category-badge">{item.category}</span>
             )}
 
-            {/* Unavailable overlay */}
             {unavailable && (
               <div className="unavailable-overlay">
                 <span className="unavailable-badge">Currently Rented</span>
@@ -252,7 +267,7 @@ const ItemCard = ({ item }) => {
             )}
           </div>
 
-          {/* ── Body ── */}
+          {/* Body */}
           <div className="item-card-body">
             <h3 className="item-name" title={item.name}>{item.name}</h3>
 
@@ -281,19 +296,17 @@ const ItemCard = ({ item }) => {
                 disabled={adding || unavailable}
                 title={error || (unavailable ? 'Not available' : 'Add to cart')}
                 className={`cart-btn ${
-                  error     ? 'errored'        :
-                  added     ? 'added'           :
-                  unavailable ? 'disabled-state' :
+                  error       ? 'errored'        :
+                  added       ? 'added'           :
+                  unavailable ? 'disabled-state'  :
                   'default'
                 }`}
               >
                 {adding ? (
-                  <>
-                    <svg className="spin" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
-                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                  </>
+                  <svg className="spin" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
                 ) : error ? (
                   <>
                     <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -321,7 +334,7 @@ const ItemCard = ({ item }) => {
             </div>
           </div>
         </div>
-      </Link>
+      </div>
     </>
   );
 };
