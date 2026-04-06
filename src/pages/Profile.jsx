@@ -42,50 +42,62 @@ const Profile = () => {
   
 
 
-//   useEffect(() => {
-//   if (!user) return;
-
-//   // getProfile() mat bulao - seedha user use karo
-//   setProfile(user);
-//   setForm({
-//     upiId: user.upiId || '',
-//     city: user.city || '',
-//     area: user.area || '',
-//     phoneNumber: user.phoneNumber || '',
-//   });
-//   setUpiEditMode(!user.upiId);
-//   setPhoneEditMode(!user.phoneNumber);
-
-//   getMyKYC().then(res => setKyc(res.data)).catch(() => {});
-// }, [user]);
-
 useEffect(() => {
   if (!user) return;
 
-  const token = localStorage.getItem('token');
   
-  fetch(`${import.meta.env.VITE_API_URL}/users/profile`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-  .then(res => res.json())
-  .then(data => {
-    console.log('PROFILE:', data); // ← dekho kya aa raha hai
-    setProfile(data);
+  getProfile().then(res => {
+    setProfile(res.data);
     setForm({
-      upiId: data.upiId || '',
-      city: data.city || '',
-      area: data.area || '',
-      phoneNumber: data.phoneNumber || '',
+      upiId:       res.data.upiId       || '',
+      city:        res.data.city        || '',
+      area:        res.data.area        || '',
+      phoneNumber: res.data.phoneNumber || '',
     });
-    setUpiEditMode(!data.upiId);
-    setPhoneEditMode(!data.phoneNumber);
-  })
-  .catch(err => console.log('ERROR:', err));
+    setUpiEditMode(!res.data.upiId);
+    setPhoneEditMode(!res.data.phoneNumber);
+  }).catch(err => {
+    console.log("Profile error:", err);
+    
+    setProfile(user);
+    setForm({
+      upiId:       user.upiId       || '',
+      city:        user.city        || '',
+      area:        user.area        || '',
+      phoneNumber: user.phoneNumber || '',
+    });
+  });
 
   getMyKYC().then(res => setKyc(res.data)).catch(() => {});
 }, [user]);
+
+// useEffect(() => {
+//   if (!user) return;
+
+//   const token = localStorage.getItem('token');
+  
+//   fetch(`${import.meta.env.VITE_API_URL}/users/profile`, {
+//     headers: {
+//       Authorization: `Bearer ${token}`
+//     }
+//   })
+//   .then(res => res.json())
+//   .then(data => {
+//     console.log('PROFILE:', data); // ← dekho kya aa raha hai
+//     setProfile(data);
+//     setForm({
+//       upiId: data.upiId || '',
+//       city: data.city || '',
+//       area: data.area || '',
+//       phoneNumber: data.phoneNumber || '',
+//     });
+//     setUpiEditMode(!data.upiId);
+//     setPhoneEditMode(!data.phoneNumber);
+//   })
+//   .catch(err => console.log('ERROR:', err));
+
+//   getMyKYC().then(res => setKyc(res.data)).catch(() => {});
+// }, [user]);
 
 useEffect(() => {
     setError(''); setSuccess(''); setLocError(''); setLocSuccess('');
