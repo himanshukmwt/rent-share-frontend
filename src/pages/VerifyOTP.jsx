@@ -48,6 +48,7 @@ const VerifyOTP = () => {
         navigate('/reset-password', { state: { email, otp } });
       } else {
         const res = await verifyOTP({ email, otp });
+          localStorage.setItem('token', res.data.token);
         login(res.data.user);
         navigate('/');
       }

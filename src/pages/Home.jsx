@@ -19,13 +19,6 @@ const SkeletonCard = ({ i }) => (
   </div>
 );
 
-/* ─── Stat ──────────────────────────────────────────────── */
-// const Stat = ({ value, label }) => (
-//   <div className="flex flex-col items-center gap-1 px-8">
-//     <span className="text-3xl font-bold text-white tracking-tight">{value}</span>
-//     <span className="text-xs uppercase tracking-widest text-blue-200 font-medium">{label}</span>
-//   </div>
-// );
 
 const Stat = ({ value, label }) => (
   <div className="flex flex-col items-center gap-1 px-3 sm:px-8">
@@ -40,12 +33,28 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState('');
 
+  // const fetchItems = useCallback(async () => {
+  //   setLoading(true); setError('');
+  //   try { setItems((await getItems()).data); }
+  //   catch { setError('Failed to load items. Please check your connection and try again.'); }
+  //   finally { setLoading(false); }
+  // }, []);
+
   const fetchItems = useCallback(async () => {
-    setLoading(true); setError('');
-    try { setItems((await getItems()).data); }
-    catch { setError('Failed to load items. Please check your connection and try again.'); }
-    finally { setLoading(false); }
-  }, []);
+  setLoading(true); setError('');
+  try { 
+    setItems((await getItems()).data); 
+  } catch (err) {
+    const status = err?.response?.status;
+    if (status === 401 || status === 403) {
+      setItems([]); // error mat dikhao
+    } else {
+      setError('Failed to load items. Please check your connection and try again.');
+    }
+  } finally { 
+    setLoading(false); 
+  }
+}, []);
 
   useEffect(() => { fetchItems(); }, [fetchItems]);
 

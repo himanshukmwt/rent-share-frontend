@@ -18,6 +18,7 @@ const Register = () => {
     setError('');
     try {
       await register(form);
+     
       navigate('/verify-otp', { state: { email: form.email } });
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
