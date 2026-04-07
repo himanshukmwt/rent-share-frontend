@@ -49,7 +49,7 @@ const VerifyOTP = () => {
       } else {
         const res = await verifyOTP({ email, otp });
           localStorage.setItem('token', res.data.token);
-        login(res.data.user);
+        login(res.data.user, res.data.token);
         navigate('/');
       }
     } catch (err) {
