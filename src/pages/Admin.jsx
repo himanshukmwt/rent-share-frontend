@@ -553,7 +553,7 @@ const [previewImg, setPreviewImg] = useState(null);
                   </div>
                 )}
 
-                // ✅ Modal add karo — KYC section ke bahar
+                
 {previewImg && (
   <div 
     className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
