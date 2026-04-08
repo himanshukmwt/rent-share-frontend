@@ -113,6 +113,8 @@ const Admin = () => {
   const [success, setSuccess]       = useState('');
   const [error, setError]           = useState('');
 
+const [previewImg, setPreviewImg] = useState(null);
+
   useEffect(() => {
     if (user && user?.role?.toString().toUpperCase() !== 'ADMIN') navigate('/');
   }, [user]);
@@ -524,13 +526,14 @@ const Admin = () => {
                             {kyc.documentImageUrl && (
                               <div>
                                 <p className="text-xs text-gray-600 mb-1">Document</p>
-                                <img src={kyc.documentImageUrl} className="w-36 h-24 object-cover rounded-xl border border-white/10"/>
+                                <img src={kyc.documentImageUrl} className="w-36 h-24 object-cover rounded-xl border border-white/10"  onClick={() => setPreviewImg(kyc.documentImageUrl)}/>
+                                
                               </div>
                             )}
                             {kyc.selfieUrl && (
                               <div>
                                 <p className="text-xs text-gray-600 mb-1">Selfie</p>
-                                <img src={kyc.selfieUrl} className="w-36 h-24 object-cover rounded-xl border border-white/10"/>
+                                <img src={kyc.selfieUrl} className="w-36 h-24 object-cover rounded-xl border border-white/10" onClick={() => setPreviewImg(kyc.selfieUrl)}/>
                               </div>
                             )}
                           </div>
@@ -549,6 +552,28 @@ const Admin = () => {
                     }
                   </div>
                 )}
+
+                // ✅ Modal add karo — KYC section ke bahar
+{previewImg && (
+  <div 
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+    onClick={() => setPreviewImg(null)}
+  >
+    <div className="relative max-w-2xl w-full mx-4">
+      <img 
+        src={previewImg} 
+        className="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+      />
+      <button 
+        onClick={() => setPreviewImg(null)}
+        className="absolute -top-3 -right-3 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-colors"
+      >
+        ✕
+      </button>
+      <p className="text-center text-gray-400 text-xs mt-3">Click anywhere to close</p>
+    </div>
+  </div>
+)}
 
                 {/* ── Users ── */}
                 {activeMenu === 'users' && (
