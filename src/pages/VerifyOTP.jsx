@@ -40,7 +40,7 @@ const VerifyOTP = () => {
   };
 
   const handleVerify = async () => {
-    if (otp.length !== 6) return setError('6 digit OTP enter karo');
+    if (otp.length !== 6) return setError('Enter 6 digit otp');
     setLoading(true);
     try {
       if (!email) return navigate('/forgot-password');

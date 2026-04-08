@@ -22,26 +22,49 @@ export const AuthProvider = ({ children }) => {
   // }, []);
 useEffect(() => {
   const token = localStorage.getItem('token');
+   const savedUser = localStorage.getItem('user');
   if (!token || localStorage.getItem('loggedOut')) {
     setUser(null);
     setLoading(false);
     return;
   }
 
+   if (savedUser) {
+    setUser(JSON.parse(savedUser));
+    setLoading(false);
+  }
+
+//   getProfile()
+//     .then(res => setUser(res.data))
+//     .catch((err) => {
+//       // Sirf 401 pe token hatao, network error pe nahi
+//       if (err.response?.status === 401) {
+//         localStorage.removeItem('token');
+//       }
+//       setUser(null);
+//     })
+//     .finally(() => setLoading(false));
+// }, []);
+
   getProfile()
-    .then(res => setUser(res.data))
+    .then(res => {
+      setUser(res.data);
+      localStorage.setItem('user', JSON.stringify(res.data)); // ✅ update karo
+    })
     .catch((err) => {
-      // Sirf 401 pe token hatao, network error pe nahi
       if (err.response?.status === 401) {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setUser(null);
       }
-      setUser(null);
+      // ✅ Network error pe user null mat karo
     })
     .finally(() => setLoading(false));
 }, []);
 
   const login = (userData,token) => {
     localStorage.setItem("token", token);
+    localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
     localStorage.removeItem('loggedOut');
   };
@@ -62,3 +85,5 @@ useEffect(() => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+
+
