@@ -9,6 +9,9 @@
 
 ---
 
+
+[🌐 Live Demo](https://rent-share-frontend.vercel.app)
+
 ##  Table of Contents
 
 - [About](#about)
@@ -177,7 +180,7 @@ VITE_RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxxxx
 
 ## Deployment
 
-This frontend is deployed on **Vercel** — [🌐 Live Demo](https://rentshare.vercel.app)
+This frontend is deployed on **Vercel** 
 
 ### Deploy Steps
 
