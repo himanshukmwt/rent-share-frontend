@@ -177,7 +177,7 @@ VITE_RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxxxx
 
 ## Deployment
 
-This frontend is deployed on **Vercel**.
+This frontend is deployed on **Vercel** — [🌐 Live Demo](https://rentshare.vercel.app)
 
 ### Deploy Steps
 
@@ -206,3 +206,11 @@ VITE_RAZORPAY_KEY_ID = rzp_live_xxxxxxxxxxxx
 ##  Author
 
 Built with ❤️ from Himanshu Kumawat
+
+
+
+
+
+
+
+
