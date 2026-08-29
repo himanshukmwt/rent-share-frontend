@@ -70,8 +70,9 @@ const Payment = () => {
         config: {
           display: {
             blocks: { upi: { name: 'Pay via UPI', instruments: [
-          { method: 'upi', flows: ['collect'] },
+  { method: 'upi', flows: ['collect'] },
   { method: 'upi', flows: ['qr'] },
+], } },
             sequence: ['block.upi'],
             preferences: { show_default_blocks: false },
           },
