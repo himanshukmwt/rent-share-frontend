@@ -69,7 +69,9 @@ const Payment = () => {
         theme: { color: '#2563eb' },
         config: {
           display: {
-            blocks: { upi: { name: 'Pay via UPI', instruments: [{ method: 'upi' }] } },
+            blocks: { upi: { name: 'Pay via UPI', instruments: [
+          { method: 'upi', flows: ['collect', 'qr', 'intent'] },
+        ], } },
             sequence: ['block.upi'],
             preferences: { show_default_blocks: false },
           },
