@@ -152,10 +152,10 @@ const Payment = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
-      <div className="max-w-lg mx-auto px-4 py-8">
+      <div className="max-w-lg mx-auto px-4 py-4">
 
         {/* Progress Steps */}
-        <div className="flex items-center justify-center gap-2 mb-8">
+        <div className="flex items-center justify-center gap-2 mb-4">
           {[1, 2, 3].map((s) => (
             <div key={s} className="flex items-center gap-2">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${
@@ -332,7 +332,7 @@ const Payment = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
               <p className="text-xs text-blue-700">
-                Owner ka location share ho gaya hai. Rental details mein dekho!
+                The owner's location has been shared. Check the rental details!
               </p>
             </div>
             <div className="flex gap-3">
