@@ -5,7 +5,10 @@ import axios from 'axios';
 
 const API = (url, options = {}) => axios({
   url: `${import.meta.env.VITE_API_URL}${url}`,
-  withCredentials: true,
+   headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+  // withCredentials: true,
   ...options,
 });
 

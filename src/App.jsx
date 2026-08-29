@@ -22,6 +22,9 @@ import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword  from './pages/ResetPassword'
 import ReportIssue from './pages/ReportIssue'
 
+const noFooterPaths = ['/login', '/register'];
+  const showFooter = !noFooterPaths.includes(location.pathname);
+  
 const LoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50">
     <div className="flex flex-col items-center gap-3">
@@ -74,7 +77,7 @@ const AppRoutes = () => {
           <Route path="/report-issue" element={<ReportIssue />} />
         </Routes>
       </main>
-      <Footer />
+      {showFooter && <Footer />}
     </div>
   );
 };
